@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../plugins/cost-calculator-builder/.idea/cost-calculator-builder.iml" filepath="$PROJECT_DIR$/../../plugins/cost-calculator-builder/.idea/cost-calculator-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../plugins/cost-calculator-builder-pro/.idea/cost-calculator-builder-pro.iml" filepath="$PROJECT_DIR$/../../plugins/cost-calculator-builder-pro/.idea/cost-calculator-builder-pro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/thrive-theme-child-theme-new.iml" filepath="$PROJECT_DIR$/.idea/thrive-theme-child-theme-new.iml" />
+    </modules>
+  </component>
+</project>
