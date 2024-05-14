@@ -17,6 +17,11 @@ class CCBOrderControllerChild extends CCBOrderController{
 		remove_all_actions('wp_ajax_nopriv_create_cc_order');
 		CCBAjaxAction::addAction( 'create_cc_order', array( CCBOrderControllerChild::class, 'create' ), true );
 		CCBAjaxAction::addAction( 'create_cc_order', array( CCBOrderControllerChild::class, 'create' ) );
+		self::wpenqueu();
+	}
+
+	public static function wpenqueu(){
+		wp_enqueue_script( 'calc-ajax',   get_stylesheet_directory_uri() .  '/assets/js/ajaxcall.js', array( 'jquery' ), time(), true );
 	}
 	public static function create() {
 		check_ajax_referer( 'ccb_add_order', 'nonce' );
@@ -129,6 +134,14 @@ class CCBOrderControllerChild extends CCBOrderController{
 					$field[ $key ]['value'] = sanitize_text_field( $field[ $key ]['value'] );
 				}
 			}
+			$orderDetailsString = '';
+			foreach ( $data['orderDetails'] as $detail ) {
+				$orderDetailsString .= "<span>" . $detail['title'] . ": ";
+				$orderDetailsString .= $detail['extraView'] . "</span>";
+
+			}
+
+			$processedOrderDetails = preg_replace('/\n/', '<br>', $orderDetailsString);
 
 			$order_data = array(
 				'calc_id'       => $data['id'],
@@ -160,6 +173,7 @@ class CCBOrderControllerChild extends CCBOrderController{
 			apply_filters( 'ccb_orders_before_create', $before_data );
 			$unique_id = self::generate_unique_id();
 			$order_data['id'] = $unique_id;
+
 			$id = Orders::create_order( $order_data, $payment_data );
 
 			do_action( 'ccb_after_create_order', $order_data, $payment_data );
@@ -171,10 +185,12 @@ class CCBOrderControllerChild extends CCBOrderController{
 
 			do_action( 'ccb_order_created', $order_data, $payment_data );
 
+
 			wp_send_json_success(
 				array(
 					'status'   => 'success',
 					'order_id' => $id,
+					'processedOrderDetails' => wp_json_encode($processedOrderDetails),
 				)
 			);
 		}

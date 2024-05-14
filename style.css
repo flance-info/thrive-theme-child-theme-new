@@ -8,3 +8,27 @@ Template: thrive-theme
  
 /* =Theme customization starts here
 ------------------------------------------------------- */
+.thank-you-page__order
+span.display-order {
+    display: flex;
+    column-gap: 5px;
+    width: 100%;
+    /* font-size: 12px; */
+    max-width: 300px;
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    /* white-space: nowrap; */
+    width: 100%;
+    /* text-align: center; */
+    color: #001931 !important;
+    font-size: calc(14px - 2px) !important;
+    font-weight: 500 !important;
+    padding-left: 110px;
+
+    flex-direction: column;
+}
+.thank-you-page__order
+span.display-order span:first-child {
+    display: flex;
+
+}

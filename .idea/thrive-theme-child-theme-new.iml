@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="cost-calculator-builder" />
     <orderEntry type="module" module-name="cost-calculator-builder-pro" />
+    <orderEntry type="module" module-name="contact-form-7" />
   </component>
 </module>
