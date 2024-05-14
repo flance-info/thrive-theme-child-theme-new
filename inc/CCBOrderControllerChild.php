@@ -176,11 +176,13 @@ class CCBOrderControllerChild extends CCBOrderController{
 
 			$id = Orders::create_order( $order_data, $payment_data );
 
+			self::send_order_confirmation_email($order_data, 	$id  );
 			do_action( 'ccb_after_create_order', $order_data, $payment_data );
 			$meta_data = array(
 				'converted' => $data['converted'] ?? array(),
 				'totals'    => isset( $data['totals'] ) ? wp_json_encode( $data['totals'] ) : array(),
 			);
+
 			update_option( 'calc_meta_data_order_' . $id, $meta_data );
 
 			do_action( 'ccb_order_created', $order_data, $payment_data );
@@ -207,5 +209,35 @@ class CCBOrderControllerChild extends CCBOrderController{
 
 		return $id;
 	}
+
+
+    public static function send_order_confirmation_email($order_data, $order_id) {
+
+        $email_to = '';
+        $message = '';
+		$fields = json_decode($order_data['form_details'], true);
+
+        if (!empty(	$fields['fields'] )) {
+            foreach ($fields['fields']  as $field) {
+
+                if ($field['name'] == 'your-email') {
+                    $email_to = $field['value'];
+                }
+                if ($field['name'] == 'your-message') {
+					$message = 'Order Number: '.$order_id ." ";
+                    $message .= $field['value'];
+                }
+            }
+        }
+
+
+        $subject = "New Order Created: Order ID " . $order_data['id'];
+        $headers = array('Content-Type: text/html; charset=UTF-8');
+
+
+        if (!empty($email_to) && !empty($message)) {
+            wp_mail($email_to, $subject, nl2br($message), $headers);
+        }
+    }
 
 }
