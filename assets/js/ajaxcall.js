@@ -12,6 +12,8 @@ jQuery(document).ready(function($) {
 
                 if (action === 'create_cc_order') {
 
+                    var preload_data = formData.get('data');
+
                     return originalFetch.apply(this, arguments).then(function(response) {
 
                         var responseClone = response.clone();
@@ -19,13 +21,29 @@ jQuery(document).ready(function($) {
                         return responseClone.json().then(function(data) {
                             if (data.success && data.data.status === 'success') {
 
-                                 var formDetails = JSON.parse(data.data.processedOrderDetails);
-                                var yourMessage = formDetails;
+                                if (preload_data) {
+                                    try {
+                                        var jsonData = JSON.parse(preload_data);
+                                        var fields = jsonData.formDetails.fields;
+                                        var yourMessage = fields.find(field => field.name === 'your-message').value;
+                                          var formattedMessage = yourMessage.replace(/\n/g, '<br>');
+                                        // Display your-message
+                                        setTimeout(function () {
+                                            $('.display-order').html(formattedMessage);
+                                        }, 500);
+                                    } catch (error) {
+                                        console.error('Error parsing JSON data:', error);
+                                    }
+                                }
+                            /*
+                                var formDetailse = JSON.parse(data.data.processedOrderDetails);
+                                var yourMessagee = formDetailse ;
 
                                setTimeout(function() {
-                                    $('.display-order').html(yourMessage);
-                                }, 500);
-
+                                    $('.display-order').html(yourMessagee);
+                                }, 1500);
+                                
+                             */
                             }
 
                             return response;
